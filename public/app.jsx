@@ -221,6 +221,11 @@ function QuizModal({
   const { questions, index, finished, correctCount, answers } = quizState;
   const current = questions[index];
   const total = questions.length;
+  const currentType = current ? current.type : null;
+  const currentTypeLabel =
+    currentType && questionTypeLabel[currentType]
+      ? questionTypeLabel[currentType]
+      : '巩固练习';
 
   const handleAnswer = (value) => {
     if (!current) return;
@@ -260,9 +265,7 @@ function QuizModal({
     <div className="quiz-modal" role="dialog" aria-modal="true">
       <div className="quiz-dialog">
         <div className="quiz-header">
-          <h3>
-            今日测验 · {questionTypeLabel[current?.type] || '巩固练习'}
-          </h3>
+          <h3>今日测验 · {currentTypeLabel}</h3>
           <button className="close-btn" onClick={onClose} aria-label="关闭测验">
             ×
           </button>
@@ -442,7 +445,14 @@ function App() {
   }, [config, selectedDate]);
 
   const masteredCount = mastered.size;
-  const totalWords = (wordsData?.new_words?.length || 0) + (wordsData?.review_words?.length || 0);
+  const newWordCount = wordsData && Array.isArray(wordsData.new_words) ? wordsData.new_words.length : 0;
+  const reviewWordCount = wordsData && Array.isArray(wordsData.review_words) ? wordsData.review_words.length : 0;
+  const totalWords = newWordCount + reviewWordCount;
+  const quizItems = wordsData && Array.isArray(wordsData.quiz_items) ? wordsData.quiz_items : [];
+  const quizItemCount = quizItems.length;
+  const selectedDifficulty = config ? config.difficulty : null;
+  const selectedDifficultyOption = difficultyOptions.find((item) => item.value === selectedDifficulty);
+  const selectedDifficultyLabel = selectedDifficultyOption ? selectedDifficultyOption.label : '—';
 
   const handleToggleMastered = (wordId) => {
     setMastered((prev) => {
@@ -496,7 +506,7 @@ function App() {
   };
 
   const buildQuiz = () => {
-    const items = wordsData?.quiz_items || [];
+    const items = quizItems;
     setQuizState({ questions: items, index: 0, finished: false, correctCount: 0, answers: [] });
     setQuizOpen(true);
   };
@@ -561,17 +571,15 @@ function App() {
           </div>
           <div className="summary-chip">
             <span>当前难度</span>
-            <strong>
-              {difficultyOptions.find((item) => item.value === config?.difficulty)?.label || '—'}
-            </strong>
+            <strong>{selectedDifficultyLabel}</strong>
           </div>
           <div className="summary-chip">
             <span>测验题量</span>
-            <strong>{wordsData?.quiz_items?.length || 0}</strong>
+            <strong>{quizItemCount}</strong>
           </div>
         </div>
         <div>
-          <button className="primary-btn" onClick={buildQuiz} disabled={loadingWords || !wordsData?.quiz_items?.length}>
+          <button className="primary-btn" onClick={buildQuiz} disabled={loadingWords || !quizItemCount}>
             发起今日测验
           </button>
         </div>
