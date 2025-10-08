@@ -1,79 +1,22 @@
 <!DOCTYPE html>
 <html lang="zh">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>每日10词 - 背词计划</title>
-  <link rel="stylesheet" href="./assets/styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <header class="app-header">
-    <h1>每日10词背诵计划</h1>
-    <p>精选主题词汇、发音、图片与例句，帮助你在30天内稳步进阶。点击发音听读，随时发起测验检验掌握程度。</p>
-  </header>
-
-  <main>
-    <section class="day-selector">
-      <button id="prev-day" class="nav-btn" aria-label="上一天">◀</button>
-      <div>
-        <p class="day-label">第 <span id="day-number">1</span> 天 · <span id="day-theme"></span></p>
-        <p class="day-date" id="day-date"></p>
-      </div>
-      <button id="next-day" class="nav-btn" aria-label="下一天">▶</button>
-    </section>
-
-    <section class="progress">
-      <div class="progress-info">
-        <span>今日已掌握：<strong id="mastered-count">0</strong>/10</span>
-        <span>学习总时长：<strong id="study-minutes">0</strong> 分钟</span>
-      </div>
-      <button id="start-quiz" class="primary-btn">开始今日测验</button>
-    </section>
-
-    <section id="word-list" class="word-grid" aria-live="polite"></section>
-  </main>
-
-  <div class="quiz-modal" id="quiz-modal" role="dialog" aria-modal="true" aria-labelledby="quiz-title" hidden>
-    <div class="quiz-content">
-      <button class="close-btn" id="close-quiz" aria-label="关闭测验">×</button>
-      <h2 id="quiz-title">今日测验</h2>
-      <div id="quiz-body">
-        <p class="quiz-progress">题目 <span id="quiz-current">1</span> / <span id="quiz-total">10</span></p>
-        <p class="quiz-question" id="quiz-question"></p>
-        <div id="quiz-options" class="quiz-options"></div>
-      </div>
-      <div id="quiz-result" class="quiz-result" hidden>
-        <h3>测验完成！</h3>
-        <p>正确 <span id="quiz-correct">0</span> 题，正确率 <span id="quiz-accuracy">0</span>%</p>
-        <button id="restart-quiz" class="primary-btn">重新测验</button>
-      </div>
-    </div>
-  </div>
-
-  <template id="word-card-template">
-    <article class="word-card">
-      <figure class="word-image">
-        <img src="" alt="" />
-      </figure>
-      <div class="word-content">
-        <header>
-          <h2 class="word-text"></h2>
-          <p class="word-phonetic"></p>
-        </header>
-        <p class="word-meaning"></p>
-        <p class="word-sentence"></p>
-        <div class="word-actions">
-          <button class="secondary-btn pronounce-btn">🔊 发音</button>
-          <button class="secondary-btn mark-btn">标记已掌握</button>
-        </div>
-      </div>
-    </article>
-  </template>
-
-  <script src="./assets/words.js"></script>
-  <script src="./assets/app.js" type="module"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>词海日程 - React 背词计划</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel" src="./app.jsx"></script>
+  </body>
 </html>
