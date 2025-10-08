@@ -46,22 +46,26 @@ function pronounce(word) {
 }
 
 function SettingsPanel({ config, onSave, saving, selectedDate, onChangeDate }) {
-  const [draft, setDraft] = useState(config);
+  const [draft, setDraft] = useState(() => config || { difficulty: 'junior', words_per_day: 10 });
 
   useEffect(() => {
-    setDraft(config);
+    if (config) {
+      setDraft(config);
+    }
   }, [config]);
 
   if (!config) return null;
+
+  const workingDraft = draft || config;
 
   return (
     <div className="controls-grid">
       <div className="control-card">
         <h3>背诵难度</h3>
         <select
-          value={draft.difficulty}
+          value={workingDraft.difficulty}
           onChange={(event) =>
-            setDraft((prev) => ({ ...prev, difficulty: event.target.value }))
+            setDraft((prev) => ({ ...(prev || config), difficulty: event.target.value }))
           }
         >
           {difficultyOptions.map((option) => (
@@ -85,10 +89,10 @@ function SettingsPanel({ config, onSave, saving, selectedDate, onChangeDate }) {
           type="number"
           min="5"
           max="30"
-          value={draft.words_per_day}
+          value={workingDraft.words_per_day}
           onChange={(event) =>
             setDraft((prev) => ({
-              ...prev,
+              ...(prev || config),
               words_per_day: Number(event.target.value),
             }))
           }
@@ -350,7 +354,7 @@ function StatsPanel({ stats, loading }) {
       {loading ? (
         <p>统计加载中…</p>
       ) : (
-        <>
+        <React.Fragment>
           <div className="stats-grid">
             <div className="stat-row">
               <span>学习单词数</span>
@@ -369,7 +373,7 @@ function StatsPanel({ stats, loading }) {
             <strong>AI 学情分析：</strong>
             <p>{stats.ai_analysis}</p>
           </div>
-        </>
+        </React.Fragment>
       )}
     </section>
   );
@@ -588,7 +592,7 @@ function App() {
       {loadingWords ? (
         <p>单词加载中…</p>
       ) : (
-        <>
+        <React.Fragment>
           <WordSection
             title="今日新词"
             words={wordsData.new_words || []}
@@ -605,7 +609,7 @@ function App() {
             favorites={favorites}
             onToggleFavorite={handleToggleFavorite}
           />
-        </>
+        </React.Fragment>
       )}
 
       <FavoritesPanel favoriteWords={favoriteWords} onToggleFavorite={handleToggleFavorite} />
